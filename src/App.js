@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
-
-function App() {
+import Home from './components/home/Home';
+import Login from './components/Login';
+import { Routes, Route, Link } from 'react-router-dom';
+import Profile from './components/home/Profile';
+import { useSelector } from 'react-redux';
+const App = () => {
+  const auth = useSelector((state) => state.auth.isAtuhenticated);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      {/* <Home /> */}
+      <Routes>
+        <Route
+          path='/'
+          element={<Home />}
+        />
+
+        <Route
+          path='/login'
+          element={<Login />}
+        />
+        <Route
+          path='/profile'
+          element={<Profile />}
+        />
+      </Routes>
     </div>
   );
-}
+};
 
 export default App;
