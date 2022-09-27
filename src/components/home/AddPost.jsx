@@ -22,7 +22,7 @@ const AddPost = () => {
   //   },
   // };
   const addToDb = () => {
-    console.log(post.image);
+   
 
     axios.post('http://127.0.0.1:3000/posts', post).then((response) => {
       dispatch(postAction.updateNewsFeed());

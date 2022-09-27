@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { authAction } from '../app/slice/authSlice';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 const Login = () => {
   const [details, setDetails] = useState({
@@ -70,7 +70,7 @@ const Login = () => {
         </span>
         <hr class='my-2' />
         <button class='bg-green-600 hover:bg-green-700 text-white my-2 py-3 px-4 mx-auto rounded-md font-bold w-fit'>
-          Create New Account
+          <Link to='/register'>Create New Account</Link>
         </button>
         <span class='absolute -bottom-12 text-sm'>
           <span class='font-bold hover:underline cursor-pointer'>

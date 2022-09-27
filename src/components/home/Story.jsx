@@ -5,9 +5,9 @@ const Story = () => {
   const dispatch = useDispatch();
 
   const mode = useSelector((state) => state.mode.isMode);
-
+  // alert(mode);
   const changeMode = () => {
-    if (mode === false) {
+    if (mode === false || mode === null) {
       dispatch(modeAction.light());
     } else if (mode === true) {
       dispatch(modeAction.dark());

@@ -240,9 +240,14 @@ const SideBar = () => {
                 ></path>
               </svg>
             </span>
-            <span class='ml-2 text-sm tracking-wide truncate'>
-              <button onClick={() => logout()}>Logout</button>
-            </span>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                logout();
+              }}
+            >
+              <span class='ml-2 text-sm tracking-wide truncate'>Logout</span>
+            </button>
           </a>
         </div>
       </aside>

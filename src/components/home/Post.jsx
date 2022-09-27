@@ -16,14 +16,13 @@ const Post = () => {
   // for search filter
 
   const [post, setPost] = useState([]);
-  // console.log(post[0].user);
-
+  const refreshPage = useSelector((state) => state.post.initialPost);
   useEffect(() => {
     axios.get(`http://127.0.0.1:3000/posts`).then((res) => {
       // setPost(res.data.allPosts);
       dispatch(postAction.savePost(res.data.allPosts));
     });
-  }, []);
+  }, [refreshPage]);
   const getAllPosts = () => {
     axios.get(`http://127.0.0.1:3000/posts`).then((res) => {
       // setPost(res.data.allPosts);
@@ -43,11 +42,6 @@ const Post = () => {
           }
         });
 
-  const refreshPage = useSelector((state) => state.post.initialPost);
-  if (refreshPage) {
-    getAllPosts();
-  }
-  // adding comment
   const authEmail = useSelector((state) => state.auth.email);
   const [comment, setComment] = useState({
     comment: '',
@@ -134,51 +128,13 @@ const Post = () => {
             <div
               class={
                 mode === true
-                  ? 'text-gray-500 text-sm mb-6 mx-3 px-2'
-                  : ' text-white text-sm mb-6 mx-3 px-2'
+                  ? 'text-black text-xl mb-6 mx-3 px-2'
+                  : ' text-white text-xl mb-6 mx-3 px-2'
               }
             >
               {item.content}
             </div>
             <div class='flex justify-start mb-4 border-t border-gray-100'>
-              <div class='flex w-full mt-1 pt-2 pl-5'>
-                <span class='bg-white transition ease-out duration-300 hover:text-red-500 border w-8 h-8 px-2 pt-2 text-center rounded-full text-gray-400 cursor-pointer mr-2'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    width='14px'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      stroke-width='2'
-                      d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z'
-                    ></path>
-                  </svg>
-                </span>
-                <img
-                  class='inline-block object-cover w-8 h-8 text-white border-2 border-white rounded-full shadow-sm cursor-pointer'
-                  src='https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80'
-                  alt=''
-                />
-                <img
-                  class='inline-block object-cover w-8 h-8 -ml-2 text-white border-2 border-white rounded-full shadow-sm cursor-pointer'
-                  src='https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80'
-                  alt=''
-                />
-                <img
-                  class='inline-block object-cover w-8 h-8 -ml-2 text-white border-2 border-white rounded-full shadow-sm cursor-pointer'
-                  src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80'
-                  alt=''
-                />
-                <img
-                  class='inline-block object-cover w-8 h-8 -ml-2 text-white border-2 border-white rounded-full shadow-sm cursor-pointer'
-                  src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2.25&amp;w=256&amp;h=256&amp;q=80'
-                  alt=''
-                />
-              </div>
               <div class='flex justify-end w-full mt-1 pt-2 pr-5'>
                 <span class='transition ease-out duration-300 hover:bg-blue-50 bg-blue-100 w-8 h-8 px-2 py-2 text-center rounded-full text-blue-400 cursor-pointer mr-2'>
                   <svg
@@ -223,7 +179,10 @@ const Post = () => {
               <div class='mt-3 mx-5 flex flex-row text-xs'>
                 <div class='flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center'>
                   Comments:
-                  <div class='ml-1 text-gray-400 text-ms'> 30</div>
+                  <div class='ml-1 text-gray-400 text-ms'>
+                    {' '}
+                    {JSON.stringify(item['comments']?.length)}
+                  </div>
                 </div>
                 <div class='flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center'>
                   Views: <div class='ml-1 text-gray-400 text-ms'> 60k</div>
@@ -235,36 +194,8 @@ const Post = () => {
                 </div>
               </div>
             </div>
-            <div>
-              {item['comments']?.map((item, id) => {
-                if (item.email) {
-                  return (
-                    <>
-                      <h1
-                        class={
-                          mode === true
-                            ? 'text-xl text-black'
-                            : 'text-xl text-white'
-                        }
-                      >
-                        {item.email}
-                      </h1>
-                      <div>
-                        <h1
-                          class={
-                            mode === true
-                              ? 'text text-black'
-                              : 'text text-white'
-                          }
-                        >
-                          {item.comment}
-                        </h1>
-                      </div>
-                    </>
-                  );
-                }
-              })}
-            </div>
+            <div></div>
+
             <div class='relative flex items-center self-center w-full max-w-xl p-4 overflow-hidden text-gray-600 focus-within:text-gray-400'>
               <img
                 class='w-10 h-10 object-cover rounded-full shadow mr-2 cursor-pointer'
@@ -314,6 +245,33 @@ const Post = () => {
               >
                 Add Comment
               </button>
+            </div>
+            <div className=''>
+              {item['comments']?.map((item, id) => {
+                if (item.email) {
+                  return (
+                    <div class='w-full flex flex-start overflow-y-auto'>
+                      <div class='w-1/2'>
+                        <div class='flex items-center'>
+                          <img
+                            class='h-5 w-5 overflow-hidden rounded-full'
+                            src='https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=60&raw_url=true&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnN8ZW58MHwyfDB8fA%3D%3D&auto=format&fit=crop&w=500'
+                            alt=''
+                          />
+                          <p class='font-semibold ml-3 text-sm text-slate-600'>
+                            {item.email}
+                            <span class='text-slate-400 text-xs'>3:21 PM</span>
+                          </p>
+                        </div>
+
+                        <div class='mt-3 w-full bg-slate-50 p-4 rounded-b-xl rounded-tr-xl'>
+                          <p class=' text-sm text-slate-500'>{item.comment}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
             </div>
           </div>
         );

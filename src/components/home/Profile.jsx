@@ -2,20 +2,33 @@ import React, { useEffect, useState } from 'react';
 import Post from './Post';
 import SideBar from './SideBar';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Story from './Story';
+import { userAction } from '../../app/slice/userSlice';
+import { followingAction } from '../../app/slice/followingSlice';
 
 const Profile = () => {
   const [postById, setPostById] = useState([]);
+  const dispatch = useDispatch();
   const authEmail = useSelector((state) => state.auth.email);
   const mode = useSelector((state) => state.mode.isMode);
-
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:3000/posts/userId/${authEmail}`)
       .then((response) => setPostById(response.data.postByID));
   }, []);
-
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:3000/auth/followers/${authEmail}`)
+      .then((response) => {
+        // dispatch(userAction.saveUser(response.data.allUsers));
+        dispatch(followingAction.saveFollowing(response.data.following));
+      });
+  }, []);
+  const { following } = useSelector((state) => state.following);
+  console.log(following);
+  const countFollowing = following.length;
+  const countPost = postById.length;
   return (
     <div>
       <div className='flex justify-center'>
@@ -55,7 +68,7 @@ const Profile = () => {
           </div>
           <div class='flex justify-center items-center gap-2 my-3'>
             <div class='font-semibold text-center mx-4'>
-              <p class='text-black'>102</p>
+              <p class='text-black'>{countPost}</p>
               <span class='text-gray-400'>Posts</span>
             </div>
             <div class='font-semibold text-center mx-4'>
@@ -63,7 +76,7 @@ const Profile = () => {
               <span class='text-gray-400'>Followers</span>
             </div>
             <div class='font-semibold text-center mx-4'>
-              <p class='text-black'>102</p>
+              <p class='text-black'>{countFollowing}</p>
               <span class='text-gray-400'>Folowing</span>
             </div>
           </div>
@@ -73,107 +86,24 @@ const Profile = () => {
           <h3 class='text-gray-600 text-sm font-semibold mb-4'>Following</h3>
           <ul class='flex items-center justify-center space-x-2'>
             {/* <!-- Story #1 --> */}
-            <li class='flex flex-col items-center space-y-2'>
-              {/* <!-- Ring --> */}
-              <a
-                class='block bg-white p-1 rounded-full'
-                href='#'
-              >
-                <img
-                  class='w-16 rounded-full'
-                  src='https://images.unsplash.com/photo-1638612913771-8f00622b96fb?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80'
-                />
-              </a>
-              {/* <!-- Username --> */}
-              <span class='text-xs text-gray-500'>Sage</span>
-            </li>
-
-            {/* <!-- Story #1 --> */}
-            <li class='flex flex-col items-center space-y-2'>
-              {/* <!-- Ring --> */}
-              <a
-                class='block bg-white p-1 rounded-full'
-                href='#'
-              >
-                <img
-                  class='w-16 rounded-full'
-                  src='https://images.unsplash.com/photo-1638649602320-450b717fa622?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80'
-                />
-              </a>
-
-              {/* <!-- Username --> */}
-              <span class='text-xs text-gray-500'>Jett</span>
-            </li>
-
-            {/* <!-- Story #2 --> */}
-            <li class='flex flex-col items-center space-y-2'>
-              {/* <!-- Ring --> */}
-              <a
-                class='block bg-white p-1 rounded-full'
-                href='#'
-              >
-                {/* <!-- Thumbnail --> */}
-                <img
-                  class='w-16 rounded-full'
-                  src='https://images.unsplash.com/photo-1638708644743-2502f38000a0?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80'
-                />
-              </a>
-
-              {/* <!-- Username --> */}
-              <span class='text-xs text-gray-500'>Sky</span>
-            </li>
-
-            {/* <!-- Story #3 --> */}
-            <li class='flex flex-col items-center space-y-2'>
-              {/* <!-- Ring --> */}
-              <a
-                class='block bg-white p-1 rounded-full'
-                href='#'
-              >
-                {/* <!-- Thumbnail --> */}
-                <img
-                  class='w-16 rounded-full'
-                  src='https://images.unsplash.com/photo-1638691899851-0e955bceba1f?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80'
-                />
-              </a>
-
-              {/* <!-- Username --> */}
-              <span class='text-xs text-gray-500'>Olivia</span>
-            </li>
-
-            {/* <!-- Story #4 --> */}
-            <li class='flex flex-col items-center space-y-2'>
-              {/* <!-- Ring --> */}
-              <a
-                class='block bg-white p-1 rounded-full'
-                href='#'
-              >
-                <img
-                  class='w-16 rounded-full'
-                  src='https://images.unsplash.com/photo-1638612913771-8f00622b96fb?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80'
-                />
-              </a>
-
-              {/* <!-- Username --> */}
-              <span class='text-xs text-gray-500'>Julia</span>
-            </li>
-            {/* <!-- Story #1 --> */}
-            <li class='flex flex-col items-center space-y-2'>
-              {/* <!-- Ring --> */}
-              <a
-                class='block bg-white p-1 rounded-full'
-                href='#'
-              >
-                {/* <!-- Thumbnail --> */}
-                <img
-                  class='w-16 rounded-full'
-                  src='https://images.unsplash.com/photo-1638649602320-450b717fa622?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80'
-                />
-              </a>
-
-              {/* <!-- Username --> */}
-              <span class='text-xs text-gray-500'>Hendrick</span>
-            </li>
+            {following.map((item) => {
+              return (
+                <li class='flex flex-col items-center space-y-2'>
+                  {/* <!-- Ring --> */}
+                  <a
+                    class='block bg-white p-1 rounded-full'
+                    href='#'
+                  >
+                    <img
+                      class='w-16 rounded-full'
+                      src='https://images.unsplash.com/photo-1638612913771-8f00622b96fb?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=200&amp;h=200&amp;q=80'
+                    />
+                  </a>
+                  {/* <!-- Username --> */}
+                  <span class='text-xs text-gray-500'>{item}</span>
+                </li>
+              );
+            })}
           </ul>
         </div>
         <div className='grid grid-cols-4 mt-8 '>
