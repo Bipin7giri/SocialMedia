@@ -7,10 +7,8 @@ const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     dispatch(searchAction.searchQuery(searchQuery));
-   
   }, [searchQuery]);
   return (
     <div>

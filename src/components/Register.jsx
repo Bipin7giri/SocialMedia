@@ -18,16 +18,17 @@ const Register = () => {
       .post('http://127.0.0.1:3000/auth/register', register)
       .then((response) => {
         setStatus(response.data);
+        alert(response.data);
         // alert(response.status);
       });
   };
   const navigate = useNavigate();
-
   if (status === 'success') {
     navigate('/login');
   }
   return (
     <div>
+      {status}
       <div class='container mt-40  w-[800px] mx-auto '>
         <h1 className='text-center text-5xl p-2 -mt-14'>Create Your account</h1>
         <div class=' flex flex-col bg-white  rounded-xl w-[800px]text-lg relative'>

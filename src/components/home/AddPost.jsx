@@ -22,8 +22,6 @@ const AddPost = () => {
   //   },
   // };
   const addToDb = () => {
-   
-
     axios.post('http://127.0.0.1:3000/posts', post).then((response) => {
       dispatch(postAction.updateNewsFeed());
     });
@@ -127,6 +125,15 @@ const AddPost = () => {
               ></line>
             </svg>
           </span>
+        </div>
+        <div>
+          <input
+            class=' focus:outline-none  w-full rounded-lg p-2 text-sm bg-gray-100 border border-transparent appearance-none rounded-tg placeholder-gray-400'
+            placeholder='tags'
+            onKeyUp={(e) => {
+              setPost({ ...post, tags: e.target.value });
+            }}
+          />
         </div>
         <button
           onClick={(e) => {

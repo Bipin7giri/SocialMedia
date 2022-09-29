@@ -9,7 +9,9 @@ const postSlice = createSlice({
   initialState: initialPostState,
   reducers: {
     updateNewsFeed(state) {
-      state.initialPost = true;
+      state.initialPost === true
+        ? (state.initialPost = false)
+        : (state.initialPost = true);
     },
     savePost(state, actions) {
       state.post = actions.payload;

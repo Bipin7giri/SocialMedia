@@ -8,6 +8,7 @@ import { userAction } from '../../app/slice/userSlice';
 function RightBar() {
   const dispatch = useDispatch();
   const authEmail = useSelector((state) => state.auth.email);
+
   // const [follow, setFollow] = useState('');
   useEffect(() => {
     axios
@@ -53,11 +54,8 @@ function RightBar() {
                       class='h-8 w-8 rounded-full'
                     />
                   </div>
-
                   <div class='col-span-3 px-1 font-semibold flex flex-col'>
-                    <div class='text-sm'>
-                      {item.gmail === authEmail ? '' : item.gmail}
-                    </div>
+                    <div class='text-sm'>{item.gmail}</div>
                     <div class='text-xm text-gray-700 font-light'></div>
                   </div>
 
