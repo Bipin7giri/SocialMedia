@@ -6,6 +6,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import Profile from './components/home/Profile';
 import { useSelector } from 'react-redux';
 import Register from './components/Register';
+import 'antd/dist/antd.css';
 const App = () => {
   const auth = useSelector((state) => state.auth.isAtuhenticated);
   return (

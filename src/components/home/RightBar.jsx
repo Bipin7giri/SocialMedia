@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { userAction } from '../../app/slice/userSlice';
-
+import { Button, notification } from 'antd';
 function RightBar() {
   const dispatch = useDispatch();
   const authEmail = useSelector((state) => state.auth.email);
@@ -26,7 +26,15 @@ function RightBar() {
         followID,
         authEmail,
       })
-      .then((response) => {});
+      .then((response) => {
+        notification.open({
+          message: 'You Have followed' + followID,
+
+          onClick: () => {
+            console.log('Notification Clicked!');
+          },
+        });
+      });
   };
   const search = useSelector((state) => state.search.initialQuery);
 

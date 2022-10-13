@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { postAction } from '../../app/slice/postSlice';
+import { Button, message } from 'antd';
 const AddPost = () => {
   const dispatch = useDispatch();
   const refresh = useSelector((state) => state.post.initialPost);
@@ -24,6 +25,7 @@ const AddPost = () => {
   const addToDb = () => {
     axios.post('http://127.0.0.1:3000/posts', post).then((response) => {
       dispatch(postAction.updateNewsFeed());
+      message.info('Posted 😂😂');
     });
   };
 
@@ -135,6 +137,7 @@ const AddPost = () => {
             }}
           />
         </div>
+
         <button
           onClick={(e) => {
             e.preventDefault();

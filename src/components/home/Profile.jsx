@@ -43,7 +43,7 @@ const Profile = () => {
               src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2000&amp;q=80'
               alt=''
             />
-            <p class='font-semibold'>{authEmail.replaceAll('"', '')}</p>
+            <p class='font-semibold'>{authEmail?.replaceAll('"', '')}</p>
             <div class='text-sm leading-normal text-gray-400 flex justify-center items-center'>
               <svg
                 viewBox='0 0 24 24'
@@ -125,7 +125,7 @@ const Profile = () => {
                     <div class='flex flex-col mb-2 ml-4 mt-1'>
                       <div class='inline flex text-gray-600 text-sm font-semibold'>
                         <span class='flex-1 flex-shrink-0'>
-                          {item.email.replaceAll('"', '')}
+                          {item.email?.replaceAll('"', '')}
                         </span>
                         <span class='mx-1 flex-1 flex-shrink-0'>
                           <svg

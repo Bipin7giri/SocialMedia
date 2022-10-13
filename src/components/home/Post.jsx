@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { likeAction } from '../../app/slice/likeSlice';
 import { postAction } from '../../app/slice/postSlice';
-
+import { Skeleton } from 'antd';
 const Post = () => {
   const dispatch = useDispatch();
   const authEmail = useSelector((state) => state.auth.email);
-  const withoutQuotesEmail = authEmail.replaceAll('"', '');
+  const withoutQuotesEmail = authEmail?.replaceAll('"', '');
 
   const [comment, setComment] = useState({
     comment: '',
@@ -219,7 +219,7 @@ const Post = () => {
                 <div class='flex text-gray-700  rounded-md mb-2 mr-4 items-center'>
                   Likes:{' '}
                   <div class='ml-1 text-gray-400 text-ms'>
-                    {JSON.stringify(item['likes'].length)}
+                    {JSON.stringify(item['likes']?.length)}
                   </div>
                 </div>
               </div>
@@ -306,7 +306,11 @@ const Post = () => {
           </div>
         );
       })}
-
+      <Skeleton
+        className='mt-16'
+        avatar
+        paragraph={{ rows: 4 }}
+      />
       {/* <div class='bg-white shadow rounded-lg mt-10'>
             <div class='flex flex-row px-2 py-3 mx-3'>
               <div class='w-auto h-auto rounded-full border-2 border-green-500'>
