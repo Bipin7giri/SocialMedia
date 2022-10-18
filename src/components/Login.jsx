@@ -16,8 +16,13 @@ const Login = () => {
 
   const sendToDb = () => {
     axios
-      .post('http://127.0.0.1:3000/auth/login', details)
-      .then((response) => setLoginStatus(response.data));
+      .post('http://127.0.0.1:3000/auth/login', details, { headers: {} })
+      .then((response) => {
+        setLoginStatus(response.data.status);
+        console.log(response.data.token);
+        dispatch(authAction.saveToken(response.data.token));
+      });
+
     if (loginStatus === 'matched') {
       dispatch(authAction.login());
       dispatch(authAction.getEmail(details.gmail));

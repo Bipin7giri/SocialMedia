@@ -6,6 +6,26 @@ import axios from 'axios';
 import { userAction } from '../../app/slice/userSlice';
 import { Button, notification } from 'antd';
 function RightBar() {
+  const postFromRedux = useSelector((state) => state.post.post);
+  const trending = postFromRedux.map((item, index) => {
+    return item.tags;
+  });
+
+  const tempObjForTrending = {};
+  trending.forEach((item, id) => {
+    tempObjForTrending[item] =
+      tempObjForTrending[item] === undefined ? 1 : tempObjForTrending[item] + 1;
+  });
+
+  const sortTrending = Object.keys(tempObjForTrending).sort((a, b) => {
+    return tempObjForTrending[b] - tempObjForTrending[a];
+  });
+
+  // const toFindDuplicates = (arry) =>
+  //   arry.filter((item, index) => arry.indexOf(item) !== index);
+  // const duplicateElements = toFindDuplicates(trending);
+  // console.log(duplicateElements);
+
   const dispatch = useDispatch();
   const authEmail = useSelector((state) => state.auth.email);
 
@@ -83,99 +103,45 @@ function RightBar() {
 
         <div class='max-w-sm rounded-lg overflow-hidden shadow-sm m-4 mt-5'>
           {/* <!--first trending tweet--> */}
-          <div class='flex'>
-            <div class='flex-1'>
-              <p class='px-4 ml-2 mt-3 w-48 text-xs text-gray-400'>
-                1 . Trending
-              </p>
-              <h2 class='px-4 ml-2 w-48 font-bold '>#Microsoft363</h2>
-              <p class='px-4 ml-2 mb-3 w-48 text-xs text-gray-400'>
-                5,466 posts
-              </p>
-            </div>
-            <div class='flex-1 px-4 py-2 m-2'>
-              <a
-                href=''
-                class=' text-2xl rounded-full text-gray-400 hover:bg-gray-800 hover:text-blue-300 float-right'
-              >
-                <svg
-                  class='m-2 h-5 w-5'
-                  fill='none'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-width='2'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path d='M19 9l-7 7-7-7'></path>
-                </svg>
-              </a>
-            </div>
-          </div>
+          {sortTrending.map((tags, id) => {
+            return (
+              <div class='flex'>
+                <div class='flex-1'>
+                  <p class='px-4 ml-2 mt-3 w-48 text-xs text-gray-400'>
+                    {id + 1} . Trending
+                  </p>
+                  <h2 class='px-4 ml-2 w-48 font-bold '>#{tags}</h2>
+                  <p class='px-4 ml-2 mb-3 w-48 text-xs text-gray-400'>
+                    {postFromRedux.filter((item) => {
+                      if (item.tags === tags) {
+                        return true;
+                      }
+                      return false;
+                    }).length + ' posts'}
+                  </p>
+                </div>
+                <div class='flex-1 px-4 py-2 m-2'>
+                  <a
+                    href=''
+                    class=' text-2xl rounded-full text-gray-400 hover:bg-gray-800 hover:text-blue-300 float-right'
+                  >
+                    <svg
+                      class='m-2 h-5 w-5'
+                      fill='none'
+                      stroke-linecap='round'
+                      stroke-linejoin='round'
+                      stroke-width='2'
+                      stroke='currentColor'
+                      viewBox='0 0 24 24'
+                    >
+                      <path d='M19 9l-7 7-7-7'></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            );
+          })}
 
-          {/* <!--second trending tweet--> */}
-
-          <div class='flex'>
-            <div class='flex-1'>
-              <p class='px-4 ml-2 mt-3 w-48 text-xs text-gray-400'>
-                2 . Politics . Trending
-              </p>
-              <h2 class='px-4 ml-2 w-48 font-bold '>#HI-Fashion</h2>
-              <p class='px-4 ml-2 mb-3 w-48 text-xs text-gray-400'>
-                8,464 posts
-              </p>
-            </div>
-            <div class='flex-1 px-4 py-2 m-2'>
-              <a
-                href=''
-                class=' text-2xl rounded-full text-gray-400 hover:bg-gray-800 hover:text-blue-300 float-right'
-              >
-                <svg
-                  class='m-2 h-5 w-5'
-                  fill='none'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-width='2'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path d='M19 9l-7 7-7-7'></path>
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          {/* <!--third trending tweet--> */}
-
-          <div class='flex'>
-            <div class='flex-1'>
-              <p class='px-4 ml-2 mt-3 w-48 text-xs text-gray-400'>
-                3 . Rock . Trending
-              </p>
-              <h2 class='px-4 ml-2 w-48 font-bold '>#Ferrari</h2>
-              <p class='px-4 ml-2 mb-3 w-48 text-xs text-gray-400'>
-                5,586 Concepts
-              </p>
-            </div>
-            <div class='flex-1 px-4 py-2 m-2'>
-              <a
-                href=''
-                class=' text-2xl rounded-full text-gray-400 hover:bg-gray-800 hover:text-blue-300 float-right'
-              >
-                <svg
-                  class='m-2 h-5 w-5'
-                  fill='none'
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-width='2'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path d='M19 9l-7 7-7-7'></path>
-                </svg>
-              </a>
-            </div>
-          </div>
           {/* <!--show more--> */}
           <div class='flex'>
             <div class='flex-1 p-4'>

@@ -1,16 +1,38 @@
-// import "./.";
 import AddPost from './AddPost';
 import Post from './Post';
-
 import SideBar from './SideBar';
 import Story from './Story';
 import { useDispatch, useSelector } from 'react-redux';
 import RightBar from './RightBar';
+import {
+  BorderBottomOutlined,
+  BorderTopOutlined,
+  RadiusBottomleftOutlined,
+  RadiusBottomrightOutlined,
+  RadiusUpleftOutlined,
+  RadiusUprightOutlined,
+} from '@ant-design/icons';
+import { Button, Divider, notification, Space } from 'antd';
 function Home() {
+  // console.log(notification[0][]);
   const mode = useSelector((state) => state.mode.isMode);
 
+  const openNotification = (placement) => {
+    notification.info({
+      message: `Notification ${placement}`,
+      description:
+        'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      placement,
+    });
+  };
+  // openNotification('bottomLeft');
   return (
     <div className='App'>
+      <pre>
+        {/* {JSON.stringify(notify)} */}
+        <br></br>
+      </pre>
+
       <div
         class={
           mode === true ? 'flex h-screen' : 'flex h-screen  dark:bg-gray-900'
@@ -36,6 +58,22 @@ function Home() {
           </div>
         </div>
       </div>
+      {/* <Space>
+        <Button
+          type='primary'
+          onClick={() => openNotification('bottomLeft')}
+          icon={<RadiusBottomleftOutlined />}
+        >
+          bottomLeft
+        </Button>
+        <Button
+          type='primary'
+          onClick={() => openNotification('bottomRight')}
+          icon={<RadiusBottomrightOutlined />}
+        >
+          bottomRight
+        </Button>
+      </Space> */}
     </div>
   );
 }

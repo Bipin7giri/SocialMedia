@@ -3,9 +3,41 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { authAction } from '../../app/slice/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { Modal } from 'antd';
+import axios from 'axios';
+import { useState } from 'react';
 const SideBar = () => {
+  const authEmail = useSelector((state) => state.auth.email);
+  const withoutQuotesEmail = authEmail?.replaceAll('"', '');
+  const [notification, setNotification] = useState([]);
+  const getNotification = () => {
+    axios
+      .get(`http://127.0.0.1:3000/posts/notification/${withoutQuotesEmail}`)
+      .then((response) => {
+        setNotification(response.data.notification);
+        // console.log(response.data.notification);
+      });
+  };
+
+  const [modal1Open, setModal1Open] = useState(false);
+  const [modal2Open, setModal2Open] = useState(false);
+
+  const postFromRedux = useSelector((state) => state.post.post);
+  // const notification = postFromRedux.filter((item, index) => {
+  //   if (item.email === withoutQuotesEmail) {
+  //     return item;
+  //   }
+  // });
+
+  // let notificationStatus = false;
+  // if (notification.length > 0) {
+  //   notificationStatus = true;
+  // }
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const notification = useSelector((state) => state.notification.notification);
+
   const mode = useSelector((state) => state.mode.isMode);
   const logout = () => {
     dispatch(authAction.logout());
@@ -57,8 +89,11 @@ const SideBar = () => {
         </div> --> */}
 
         <div class=' my-2 p-2 flex justify-center'>
-          <a
-            href='#'
+          <button
+            onClick={() => {
+              setModal1Open(true);
+              getNotification();
+            }}
             class={
               mode === true
                 ? 'relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6'
@@ -68,7 +103,7 @@ const SideBar = () => {
             <span class='inline-flex justify-center items-center ml-4'>
               <svg
                 class='w-5 h-5'
-                fill='none'
+                // fill={notificationStatus === true ? 'green' : 'none'}
                 stroke='currentColor'
                 viewBox='0 0 24 24'
                 xmlns='http://www.w3.org/2000/svg'
@@ -81,13 +116,17 @@ const SideBar = () => {
                 ></path>
               </svg>
             </span>
-            <span class='ml-2 text-sm tracking-wide truncate'>
+            <span
+            // class={
+            //   notificationStatus === true
+            //     ? 'ml-2 text-sm tracking-wide truncate text-green-600'
+            //     : 'ml-2 text-sm tracking-wide truncate'
+            // }
+            >
               Notifications
             </span>
-            <span class='px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full'>
-              1.2k
-            </span>
-          </a>
+            <span class='px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-red-500 bg-red-50 rounded-full'></span>
+          </button>
         </div>
 
         <div class=' my-2 p-2 flex justify-center'>
@@ -148,35 +187,6 @@ const SideBar = () => {
             <span class='px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-green-500 bg-green-50 rounded-full'>
               (15)
             </span>
-          </a>
-        </div>
-
-        <div class=' my-2 p-2 flex justify-center'>
-          <a
-            href='#'
-            class={
-              mode === true
-                ? 'relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6'
-                : 'relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-white hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6'
-            }
-          >
-            <span class='inline-flex justify-center items-center ml-4'>
-              <svg
-                class='w-5 h-5'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  stroke-linecap='round'
-                  stroke-linejoin='round'
-                  stroke-width='2'
-                  d='M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01'
-                ></path>
-              </svg>
-            </span>
-            <span class='ml-2 text-sm tracking-wide truncate'>Lists</span>
           </a>
         </div>
 
@@ -251,6 +261,21 @@ const SideBar = () => {
           </a>
         </div>
       </aside>
+      <Modal
+        title='Notification'
+        style={{
+          top: 20,
+        }}
+        visible={modal1Open}
+        onCancel={() => {
+          setModal1Open(false);
+        }}
+        onOk={() => setModal1Open(false)}
+      >
+        {notification.map((item) => {
+          return <h1>{item}</h1>;
+        })}
+      </Modal>
     </div>
   );
 };

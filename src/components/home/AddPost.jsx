@@ -22,11 +22,25 @@ const AddPost = () => {
   //     'content-type': 'multipart/form-data',
   //   },
   // };
+  const token = useSelector((state) => state.auth.token);
+
   const addToDb = () => {
-    axios.post('http://127.0.0.1:3000/posts', post).then((response) => {
-      dispatch(postAction.updateNewsFeed());
-      message.info('Posted 😂😂');
-    });
+    axios
+      .post('http://127.0.0.1:3000/posts', post, {
+        headers: {
+          authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        dispatch(postAction.updateNewsFeed());
+        message.info(response.data);
+        // if (!response) {
+        //   alert('invalid user');
+        // } else {
+        //   message.info('Posted🆗🆗');
+        // }
+      });
   };
 
   return (

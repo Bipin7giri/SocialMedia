@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { likeAction } from '../../app/slice/likeSlice';
 import { postAction } from '../../app/slice/postSlice';
-import { Skeleton } from 'antd';
+import { notification, Skeleton } from 'antd';
+
 const Post = () => {
   const dispatch = useDispatch();
   const authEmail = useSelector((state) => state.auth.email);
@@ -54,7 +55,11 @@ const Post = () => {
     search === ''
       ? postFromRedux
       : postFromRedux.filter((item) => {
-          if (item.email?.includes(search)) {
+          if (
+            item.email?.includes(search) ||
+            item.content?.includes(search) ||
+            item.tags?.includes(search)
+          ) {
             return item;
           }
         });
@@ -150,7 +155,7 @@ const Post = () => {
                     : ' text-white font-semibold   text-xl  '
                 }
               >
-                {item.tags}
+                {'#' + item.tags}
               </div>
             </div>
             <div class='flex justify-start mb-4 border-t border-gray-100'>
