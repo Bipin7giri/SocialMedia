@@ -1,12 +1,27 @@
 import React from 'react';
 import Active from './sidebar/Active';
 import Profile from './sidebar/Profile';
+import { useState, useEffect } from 'react';
+import io from 'socket.io-client';
+const socket = io.connect('http://localhost:3000');
+const Test = () => {
+  const [message, setMessage] = useState('');
+  const [showMessage, setShowMessage] = useState([]);
+  const sendMessage = () => {
+    alert(message);
+    socket.emit('chat message', message);
+  };
+  useEffect(() => {
+    socket.on('recive message', (msg) => {
+      setShowMessage([...showMessage, msg]);
+    });
+  }, [socket]);
 
-const test = () => {
   return (
     <div>
       <div class='h-screen w-full flex antialiased text-gray-200 bg-gray-900 overflow-hidden'>
         <div class='flex-1 flex flex-col'>
+          {showMessage}
           <div class='border-b-2 border-gray-800 p-2 flex flex-row z-20'>
             <div class='bg-red-600 w-3 h-3 rounded-full mr-2'></div>
             <div class='bg-yellow-500 w-3 h-3 rounded-full mr-2'></div>
@@ -41,7 +56,7 @@ const test = () => {
                 </a>
               </div>
               <div class='search-box p-4 flex-none'>
-                <form onsubmit=''>
+                <form>
                   <div class='relative'>
                     <label>
                       <input
@@ -132,7 +147,7 @@ const test = () => {
                   <div class='messages text-sm text-gray-700 grid grid-flow-row gap-2'>
                     <div class='flex items-center group'>
                       <p class='px-6 py-3 rounded-t-full rounded-r-full bg-gray-800 max-w-xs lg:max-w-md text-gray-200'>
-                        Hey! How are you?
+                        {showMessage}
                       </p>
                       <button
                         type='button'
@@ -396,7 +411,7 @@ C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.
                   </div>
                 </div>
                 <p class='p-4 text-center text-sm text-gray-500'>SAT 2:10 PM</p>
-                <div class='flex flex-row justify-start'>
+                {/*<div class='flex flex-row justify-start'>
                   <div class='w-8 h-8 relative flex flex-shrink-0 mr-4'>
                     <img
                       class='shadow-md rounded-full w-full h-full object-cover'
@@ -718,7 +733,7 @@ C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.
                       </button>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div class='chat-footer flex-none'>
                 <div class='flex flex-row items-center p-4'>
@@ -769,9 +784,11 @@ C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.
                   <div class='relative flex-grow'>
                     <label>
                       <input
+                        onKeyUp={(e) => {
+                          setMessage(e.target.value);
+                        }}
                         class='rounded-full py-2 pl-3 pr-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in'
                         type='text'
-                        value=''
                         placeholder='Aa'
                       />
                       <button
@@ -788,15 +805,19 @@ C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.
                     </label>
                   </div>
                   <button
+                    onClick={() => {
+                      sendMessage();
+                    }}
                     type='button'
                     class='flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6'
                   >
-                    <svg
+                    {/* <svg
                       viewBox='0 0 20 20'
                       class='w-full h-full fill-current'
                     >
                       <path d='M11.0010436,0 C9.89589787,0 9.00000024,0.886706352 9.0000002,1.99810135 L9,8 L1.9973917,8 C0.894262725,8 0,8.88772964 0,10 L0,12 L2.29663334,18.1243554 C2.68509206,19.1602453 3.90195042,20 5.00853025,20 L12.9914698,20 C14.1007504,20 15,19.1125667 15,18.000385 L15,10 L12,3 L12,0 L11.0010436,0 L11.0010436,0 Z M17,10 L20,10 L20,20 L17,20 L17,10 L17,10 Z' />
-                    </svg>
+                    </svg> */}
+                    send
                   </button>
                 </div>
               </div>
@@ -808,4 +829,4 @@ C15.786,7.8,14.8,8.785,14.8,10s0.986,2.2,2.201,2.2S19.2,11.215,19.2,10S18.216,7.
   );
 };
 
-export default test;
+export default Test;

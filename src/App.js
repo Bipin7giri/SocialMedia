@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
 import './App.css';
 import Home from './components/home/Home';
 import Login from './components/Login';
 import { Routes, Route, Link } from 'react-router-dom';
 import Profile from './components/home/Profile';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Register from './components/Register';
 import Test from './components/messenger/Test';
 import 'antd/dist/antd.css';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { userAction } from './app/slice/userSlice';
+
 const App = () => {
-  const auth = useSelector((state) => state.auth.isAtuhenticated);
   return (
     <div className='App'>
       {/* <Home /> */}
@@ -28,7 +30,7 @@ const App = () => {
           element={<Register />}
         />
         <Route
-          path='/profile'
+          path='/profile/:gmail'
           element={<Profile />}
         />
         <Route

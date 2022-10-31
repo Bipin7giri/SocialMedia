@@ -14,19 +14,18 @@ const AddPost = () => {
     tags: '',
     email: authEmail,
   });
-  // const formData = new FormData();
-  // formData.append('file', post.image);
-  // formData.append('fileName', post.image.name);
-  // const config = {
-  //   headers: {
-  //     'content-type': 'multipart/form-data',
-  //   },
-  // };
+
+  const formData = new FormData();
+  formData.append('image', post.image);
+  formData.append('content', post.content);
+  formData.append('tags', post.tags);
+  formData.append('email', post.email);
+
   const token = useSelector((state) => state.auth.token);
 
   const addToDb = () => {
     axios
-      .post('http://127.0.0.1:3000/posts', post, {
+      .post('http://127.0.0.1:3000/posts', formData, {
         headers: {
           authorization: token,
         },
@@ -35,16 +34,14 @@ const AddPost = () => {
         console.log(response);
         dispatch(postAction.updateNewsFeed());
         message.info(response.data);
-        // if (!response) {
-        //   alert('invalid user');
-        // } else {
-        //   message.info('Posted🆗🆗');
-        // }
       });
   };
 
   return (
-    <form class='bg-white shadow rounded-lg mb-6 p-4 w-full md:w-3/4 '>
+    <form
+      encType='multipart/form-data'
+      class='bg-white shadow rounded-lg mb-6 p-4 w-full md:w-3/4 '
+    >
       <textarea
         onKeyUp={(e) => {
           setPost({ ...post, content: e.target.value });

@@ -9,7 +9,7 @@ const userSlice = createSlice({
   reducers: {
     saveUser(state, actions) {
       state.users = actions.payload;
-      //   localStorage.setItem('post', JSON.stringify(state.post));
+      localStorage.setItem('user', JSON.stringify(actions.payload));
     },
   },
 });

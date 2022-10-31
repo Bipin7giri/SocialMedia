@@ -28,12 +28,8 @@ function Home() {
   // openNotification('bottomLeft');
   return (
     <div className='App'>
-      <pre>
-        {/* {JSON.stringify(notify)} */}
-        <br></br>
-      </pre>
-
-      <div
+  
+    <div
         class={
           mode === true ? 'flex h-screen' : 'flex h-screen  dark:bg-gray-900'
         }
